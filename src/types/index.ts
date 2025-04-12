@@ -23,4 +23,18 @@ export interface Vaccine {
     notes: string;
     status: 'scheduled' | 'completed';
   }
+
+  export interface IPatientVaccinationResponse {
+      data: Vaccination[];
+      statusCode:string;
+      message:string;
+      error: null
+  }
   
+
+export interface IPayload{
+    data: any,
+    statusCode: string,
+    message: string,
+    error: string | null
+}
