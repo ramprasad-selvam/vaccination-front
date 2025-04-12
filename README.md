@@ -1,12 +1,41 @@
-# React + Vite
+# 💉 Vaccine and Immunization Tracking System (POC)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a full-stack application designed to track and manage vaccinations for patients. It allows healthcare providers to record and view vaccination history, and patients to monitor their own records.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🧩 System Architecture Overview
 
-## Expanding the ESLint configuration
+### 🔧 Tech Stack
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+**Frontend**  
+- React.js + Vite  
+- Redux Toolkit  
+- TailwindCSS  
+- Material UI (MUI)
+
+**Backend**  
+- Node.js + Express.js  
+
+**Database**  
+- MongoDB (via Mongoose)  
+
+**Authentication & Security**  
+- JWT (Login/Auth middleware)  
+- Bcrypt (Password hashing)
+
+---
+
+## 📁 MongoDB Collections Schema
+
+### 1. `users`
+```json
+{
+  _id: ObjectId,
+  username: String,
+  email: String,
+  password: String, // hashed with bcrypt
+  role: String, // 'provider' | 'patient',
+  createdAt: Date,
+  updatedAt: Date
+}
