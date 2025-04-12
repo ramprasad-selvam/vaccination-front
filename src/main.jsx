@@ -7,7 +7,7 @@ import Logout from "./pages/Logout";
 import Register from "./pages/Register";
 import PrivateRoute from "./components/Private";
 import Profile from "./pages/Profile";
-
+import Dashboard from "./pages/Dashboard";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
@@ -21,6 +21,14 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           element={
             <PrivateRoute>
               <Profile />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <Dashboard />
             </PrivateRoute>
           }
         />

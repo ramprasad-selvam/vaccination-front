@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Layout from "../components/Layout";
-function EditProfile() {
+function Profile() {
   const allAllergies = [
     "Peanuts",
     "Dairy",
@@ -50,7 +50,7 @@ function EditProfile() {
   );
 
   return (
-    <Layout heading="Edit Profile">
+    <Layout heading="Profile">
       <div className="ctr" role="main">
         <form onSubmit={handleSubmit}>
           <label htmlFor="dob">Date of Birth</label>
@@ -117,4 +117,4 @@ function EditProfile() {
   );
 }
 
-export default EditProfile;
+export default Profile;
