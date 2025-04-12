@@ -1,1 +1,37 @@
-[]
+[
+    {
+      "_id": "301",
+      "name": "COVAXIN",
+      "manufacturer": "Bharat Biotech",
+      "dosesRequired": 2,
+      "ageGroup": "18+"
+    },
+    {
+      "_id": "302",
+      "name": "COVISHIELD",
+      "manufacturer": "Serum Institute",
+      "dosesRequired": 2,
+      "ageGroup": "18+"
+    },
+    {
+      "_id": "303",
+      "name": "Moderna",
+      "manufacturer": "Moderna Inc.",
+      "dosesRequired": 2,
+      "ageGroup": "12+"
+    },
+    {
+      "_id": "304",
+      "name": "Pfizer-BioNTech",
+      "manufacturer": "Pfizer",
+      "dosesRequired": 2,
+      "ageGroup": "5+"
+    },
+    {
+      "_id": "305",
+      "name": "Sputnik V",
+      "manufacturer": "Gamaleya Research Institute",
+      "dosesRequired": 2,
+      "ageGroup": "18+"
+    }
+  ]
