@@ -1,1 +1,40 @@
-[]
+[
+    {
+      "_id": "1",
+      "userId": "101",
+      "dob": "2000-05-15",
+      "gender": "male",
+      "address": "123 Health Ave, Wellness City",
+      "contact": "9876543210",
+      "vaccine": [
+        {
+          "_id": "v1",
+          "patientId": "1",
+          "providerId": "201",
+          "vaccineId": "301",
+          "doseNumber": 1,
+          "dateAdministered": "2024-01-15",
+          "notes": "No side effects"
+        }
+      ]
+    },
+    {
+      "_id": "2",
+      "userId": "102",
+      "dob": "1995-08-20",
+      "gender": "female",
+      "address": "456 Clinic Road, Medtown",
+      "contact": "9123456780",
+      "vaccine": [
+        {
+          "_id": "v2",
+          "patientId": "2",
+          "providerId": "201",
+          "vaccineId": "302",
+          "doseNumber": 2,
+          "dateAdministered": "2024-02-01",
+          "notes": "Mild fever reported"
+        }
+      ]
+    }
+  ]
