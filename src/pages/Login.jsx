@@ -3,58 +3,58 @@ import logo from "../assets/logo.svg";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+  const navigate = useNavigate(); // Initialize navigator
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setLoading(true);
-    setErrorMsg("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:4000/api/v1/auth/login", {
+      const res = await fetch("http://localhost:4000/api/v1/auth/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Login failed");
-      }
+      const data = await res.json();
 
-      const { data, error } = await response.json();
-      if (error == null) {
-        document.cookie = `authToken=${data.token}; path=/; max-age=3600`;
-        setTimeout(() => {
-          navigate("/patient");
-        }
-        , 10);
+      if (res.ok && data.success) {
+        setSuccessMsg("Login successful!");
+        setErrorMsg("");
+
+        console.log("✅ Navigating to / ...");
+        navigate("/"); // Redirect immediately
+      } else {
+        setErrorMsg(data.message || "Login failed");
+        setSuccessMsg("");
       }
     } catch (error) {
-      setErrorMsg(error.message);
-    } finally {
-      setLoading(false);
+      console.error("Login error:", error);
+      setErrorMsg("Something went wrong. Please try again.");
+      setSuccessMsg("");
     }
   };
 
   return (
     <div className="container" role="main">
       <img src={logo} alt="Company Logo" className="logo" />
+      <h2>Login</h2>
+
+      {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
+      {successMsg && <p style={{ color: "green" }}>{successMsg}</p>}
+
       <form onSubmit={handleSubmit}>
         <label htmlFor="email">Email</label>
         <input
           type="email"
           id="email"
           autoComplete="username"
-          required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
 
         <label htmlFor="password">Password</label>
@@ -62,8 +62,8 @@ function Login() {
           type="password"
           id="password"
           autoComplete="current-password"
-          required
           value={password}
+          required
           onChange={(e) => setPassword(e.target.value)}
         />
 
