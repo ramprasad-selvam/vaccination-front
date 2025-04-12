@@ -7,7 +7,7 @@ import Logout from "./pages/Logout";
 import Register from "./pages/Register";
 import PrivateRoute from "./components/Private";
 import Profile from "./pages/Profile";
-import Dashboard from "./pages/Dashboard";
+import PatientDashboard from "./pages/PatientDashboard";
 import ProviderDashBoard from "./pages/ProviderDashBoard";
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
@@ -33,15 +33,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             path="/dashboard"
             element={
               <PrivateRoute>
-                <Dashboard />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/dashboard"
-            element={
-              <PrivateRoute>
-                <Dashboard />
+                <PatientDashboard />
               </PrivateRoute>
             }
           />
