@@ -1,91 +1,76 @@
 import React, { useState } from "react";
+import logo from "../assets/logo.svg";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const navigate = useNavigate();
-
-  // 👉 Simple email format checker
-  const isValidEmail = (email) =>
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setLoading(true);
     setErrorMsg("");
 
-    // ✅ Validation
-    if (!isValidEmail(email)) {
-      setErrorMsg("Please enter a valid email address.");
-      return;
-    }
-
-    if (password.length < 6) {
-      setErrorMsg("Password must be at least 6 characters.");
-      return;
-    }
-
-    setLoading(true);
-
     try {
-      const res = await fetch("http://localhost:4000/api/v1/auth/login", {
+      const response = await fetch("http://localhost:4000/api/v1/auth/login", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await res.json();
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Login failed");
+      }
 
-      if (res.ok && data.success) {
-        const token = data?.data?.token;
-
-        if (token) {
-          // Save the token to localStorage
-          localStorage.setItem("token", token);
-        }
-
-        console.log("✅ Login successful, redirecting to /");
-        navigate("/"); // This should redirect
-      } else {
-        setErrorMsg(data.message || "Login failed");
+      const { data, error } = await response.json();
+      if (error == null) {
+        document.cookie = `authToken=${data.token}; path=/; max-age=3600`;
+        setTimeout(() => {
+          navigate("/patient");
+        }, 10);
       }
     } catch (error) {
-      console.error("Login error:", error);
-      setErrorMsg("Something went wrong. Please try again.");
+      setErrorMsg(error.message);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="container">
-      <h2>Login</h2>
-
-      {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
-
+    <div className="container" role="main">
+      <img src={logo} alt="Company Logo" className="logo" />
       <form onSubmit={handleSubmit}>
-        <label>Email</label>
+        <label htmlFor="email">Email</label>
         <input
           type="email"
+          id="email"
+          autoComplete="username"
+          required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
         />
 
-        <label>Password</label>
+        <label htmlFor="password">Password</label>
         <input
           type="password"
+          id="password"
+          autoComplete="current-password"
+          required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
         />
 
         <button type="submit" disabled={loading}>
           {loading ? "Logging in..." : "Login"}
         </button>
+
+        {errorMsg && <p style={{ color: "red", marginTop: 10 }}>{errorMsg}</p>}
       </form>
     </div>
   );
