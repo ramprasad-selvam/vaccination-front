@@ -1,16 +1,34 @@
 import React, { useState } from "react";
-import logo from "../assets/logo.svg";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
-  const [successMsg, setSuccessMsg] = useState("");
-  const navigate = useNavigate(); // Initialize navigator
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+
+  // 👉 Simple email format checker
+  const isValidEmail = (email) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMsg("");
+
+    // ✅ Validation
+    if (!isValidEmail(email)) {
+      setErrorMsg("Please enter a valid email address.");
+      return;
+    }
+
+    if (password.length < 6) {
+      setErrorMsg("Password must be at least 6 characters.");
+      return;
+    }
+
+    setLoading(true);
 
     try {
       const res = await fetch("http://localhost:4000/api/v1/auth/login", {
@@ -22,56 +40,52 @@ function Login() {
       const data = await res.json();
 
       if (res.ok && data.success) {
-        setSuccessMsg("Login successful!");
-        setErrorMsg("");
+        const token = data?.data?.token;
 
-        console.log("✅ Navigating to / ...");
-        navigate("/"); // Redirect immediately
+        if (token) {
+          // Save the token to localStorage
+          localStorage.setItem("token", token);
+        }
+
+        console.log("✅ Login successful, redirecting to /");
+        navigate("/"); // This should redirect
       } else {
         setErrorMsg(data.message || "Login failed");
-        setSuccessMsg("");
       }
     } catch (error) {
       console.error("Login error:", error);
       setErrorMsg("Something went wrong. Please try again.");
-      setSuccessMsg("");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="container" role="main">
-      <img src={logo} alt="Company Logo" className="logo" />
+    <div className="container">
       <h2>Login</h2>
 
       {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
-      {successMsg && <p style={{ color: "green" }}>{successMsg}</p>}
 
       <form onSubmit={handleSubmit}>
-        <label htmlFor="email">Email</label>
+        <label>Email</label>
         <input
           type="email"
-          id="email"
-          autoComplete="username"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
 
-        <label htmlFor="password">Password</label>
+        <label>Password</label>
         <input
           type="password"
-          id="password"
-          autoComplete="current-password"
           value={password}
-          required
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
 
         <button type="submit" disabled={loading}>
           {loading ? "Logging in..." : "Login"}
         </button>
-
-        {errorMsg && <p style={{ color: "red", marginTop: 10 }}>{errorMsg}</p>}
       </form>
     </div>
   );
