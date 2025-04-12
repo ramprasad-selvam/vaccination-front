@@ -37,6 +37,14 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               </PrivateRoute>
             }
           />
+          <Route
+            path="/provider"
+            element={
+              <PrivateRoute>
+                <ProviderDashBoard />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </Provider>
