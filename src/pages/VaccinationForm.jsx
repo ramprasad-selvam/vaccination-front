@@ -109,3 +109,4 @@ const VaccinationForm = ({ patient, onBack }) => {
     </Box>
   );
 };
+export default VaccinationForm;
